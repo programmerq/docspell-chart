@@ -1,0 +1,7 @@
+apiVersion: v2
+name: docspell
+description: Docspell is a Document Management System (DMS), a system that asists in organizing your piles of documents
+
+type: application
+version: 0.1.0
+appVersion: "0.39.0"

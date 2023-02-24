@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: joex
+    {{- include "docspell.labels" . | nindent 4 }}
+  name: joex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "docspell.selectorLabels" . | nindent 6 }}
+      io.kompose.service: joex
+      {{- include "docspell.labels" . | nindent 6 }}
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docspell-default: "true"
+        io.kompose.service: joex
+    spec:
+      containers:
+        - env:
+            - name: DOCSPELL_JOEX_ADDONS_EXECUTOR__CONFIG_RUNNER
+              value: docker,trivial
+            - name: DOCSPELL_JOEX_APP__ID
+              value: joex1
+            - name: DOCSPELL_JOEX_BASE__URL
+              value: http://docspell-joex:7878
+            - name: DOCSPELL_JOEX_BIND_ADDRESS
+              value: 0.0.0.0
+            - name: DOCSPELL_JOEX_CONVERT_HTML__CONVERTER
+              value: weasyprint
+            - name: DOCSPELL_JOEX_FULL__TEXT__SEARCH_ENABLED
+              value: "true"
+            - name: DOCSPELL_JOEX_FULL__TEXT__SEARCH_SOLR_URL
+              value: http://docspell-solr:8983/solr/docspell
+            - name: DOCSPELL_JOEX_JDBC_PASSWORD
+              value: dbpass
+            - name: DOCSPELL_JOEX_JDBC_URL
+              value: jdbc:postgresql://db:5432/dbname
+            - name: DOCSPELL_JOEX_JDBC_USER
+              value: dbuser
+            - name: DOCSPELL_JOEX_PERIODIC__SCHEDULER_NAME
+              value: joex1
+            - name: DOCSPELL_JOEX_SCHEDULER_NAME
+              value: joex1
+            - name: TZ
+              value: Europe/Berlin
+          image: docspell/joex:latest
+          name: docspell-joex
+          ports:
+            - containerPort: 7878
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "docspell.labels" . | nindent 4 }}
+  name: restserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "docspell.labels" . | nindent 6 }}
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docspell-default: "true"
+        io.kompose.service: restserver
+    spec:
+      containers:
+        - env:
+            - name: DOCSPELL_SERVER_ADMIN__ENDPOINT_SECRET
+              value: admin123
+            - name: DOCSPELL_SERVER_AUTH_SERVER__SECRET
+            - name: DOCSPELL_SERVER_BACKEND_ADDONS_ENABLED
+              value: "false"
+            - name: DOCSPELL_SERVER_BACKEND_JDBC_PASSWORD
+              value: dbpass
+            - name: DOCSPELL_SERVER_BACKEND_JDBC_URL
+              value: jdbc:postgresql://db:5432/dbname
+            - name: DOCSPELL_SERVER_BACKEND_JDBC_USER
+              value: dbuser
+            - name: DOCSPELL_SERVER_BACKEND_SIGNUP_MODE
+              value: open
+            - name: DOCSPELL_SERVER_BACKEND_SIGNUP_NEW__INVITE__PASSWORD
+            - name: DOCSPELL_SERVER_BIND_ADDRESS
+              value: 0.0.0.0
+            - name: DOCSPELL_SERVER_FULL__TEXT__SEARCH_ENABLED
+              value: "true"
+            - name: DOCSPELL_SERVER_FULL__TEXT__SEARCH_SOLR_URL
+              value: http://docspell-solr:8983/solr/docspell
+            - name: DOCSPELL_SERVER_INTEGRATION__ENDPOINT_ENABLED
+              value: "true"
+            - name: DOCSPELL_SERVER_INTEGRATION__ENDPOINT_HTTP__HEADER_ENABLED
+              value: "true"
+            - name: DOCSPELL_SERVER_INTEGRATION__ENDPOINT_HTTP__HEADER_HEADER__VALUE
+              value: integration-password123
+            - name: DOCSPELL_SERVER_INTERNAL__URL
+              value: http://docspell-restserver:7880
+            - name: TZ
+              value: Europe/Berlin
+          image: docspell/restserver:latest
+          name: docspell-restserver
+          ports:
+            - containerPort: 7880
+          resources: {}
+      restartPolicy: Always
+status: {}

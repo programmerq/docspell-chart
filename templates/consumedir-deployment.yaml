@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "docspell.labels" . | nindent 4 }}
+  name: consumedir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "docspell.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        {{- include "docspell.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: consumedir
+    spec:
+      containers:
+        - args:
+            - dsc
+            - -d
+            - http://docspell-restserver:7880
+            - watch
+            - --delete
+            - -ir
+            - --not-matches
+            - '**/.*'
+            - --header
+            - Docspell-Integration:integration-password123
+            - /opt/docs
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          name: consumedir
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/docs
+              name: consumedir-claim0
+      restartPolicy: Always
+      volumes:
+        - name: consumedir-claim0
+          persistentVolumeClaim:
+            claimName: consumedir-claim0
+status: {}
