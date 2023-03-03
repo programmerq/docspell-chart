@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: joex
     {{- include "docspell.labels" . | nindent 4 }}
   name: joex
 spec:
@@ -11,15 +10,14 @@ spec:
   selector:
     matchLabels:
       {{- include "docspell.selectorLabels" . | nindent 6 }}
-      io.kompose.service: joex
-      {{- include "docspell.labels" . | nindent 6 }}
+      app.kubernetes.io/component: joex
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.network/docspell-default: "true"
-        io.kompose.service: joex
+        {{- include "docspell.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: joex
     spec:
       containers:
         - env:

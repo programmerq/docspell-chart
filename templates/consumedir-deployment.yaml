@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       {{- include "docspell.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: consumedir
   strategy:
     type: Recreate
   template:

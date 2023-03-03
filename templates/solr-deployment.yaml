@@ -3,21 +3,22 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: solr
+    {{- include "docspell.labels" . | nindent 4 }}
   name: solr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: solr
+      {{- include "docspell.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: solr
   strategy:
     type: Recreate
   template:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.network/docspell-default: "true"
-        io.kompose.service: solr
+        {{- include "docspell.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: solr
     spec:
       containers:
         - args:

@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: db
     {{- include "docspell.labels" . | nindent 4 }}
   name: db
 spec:
@@ -11,15 +10,15 @@ spec:
   selector:
     matchLabels:
       {{- include "docspell.selectorLabels" . | nindent 6 }}
-      {{- include "docspell.labels" . | nindent 6 }}
+      app.kubernetes.io/component: db
   strategy:
     type: Recreate
   template:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.network/docspell-default: "true"
-        io.kompose.service: db
+        {{- include "docspell.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: db
     spec:
       containers:
         - env:

@@ -9,14 +9,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "docspell.labels" . | nindent 6 }}
+      {{- include "docspell.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: restserver
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.network/docspell-default: "true"
-        io.kompose.service: restserver
+        {{- include "docspell.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: restserver
     spec:
       containers:
         - env:
