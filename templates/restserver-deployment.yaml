@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     {{- include "docspell.labels" . | nindent 4 }}
-  name: restserver
+  name: {{ .Release.Name }}-restserver
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -14,11 +14,28 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         {{- include "docspell.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: restserver
     spec:
+      {{- if .Values.schedulerName }}
+      schedulerName: "{{ .Values.schedulerName }}"
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: "{{ .Values.priorityClassName }}"
+      {{- end }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ template "docspell.serviceAccountName" . }}
+      {{- end }}
       containers:
         - env:
             - name: DOCSPELL_SERVER_ADMIN__ENDPOINT_SECRET
@@ -51,10 +68,10 @@ spec:
               value: http://docspell-restserver:7880
             - name: TZ
               value: Europe/Berlin
-          image: docspell/restserver:latest
+          image: {{ .Values.image.repository }}:{{ coalesce .Values.image.tag .Values.appVersionOverride .Chart.AppVersion "latest" }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
           name: docspell-restserver
           ports:
             - containerPort: 7880
           resources: {}
       restartPolicy: Always
-status: {}

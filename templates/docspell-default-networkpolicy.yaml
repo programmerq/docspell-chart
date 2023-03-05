@@ -1,15 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  creationTimestamp: null
   name: docspell-default
 spec:
   ingress:
     - from:
         - podSelector:
             matchLabels:
-      {{- include "docspell.selectorLabels" . | nindent 6 }}
-              io.kompose.network/docspell-default: "true"
+              {{- include "docspell.selectorLabels" . | nindent 14 }}
   podSelector:
     matchLabels:
-      io.kompose.network/docspell-default: "true"
+      {{- include "docspell.selectorLabels" . | nindent 6 }}

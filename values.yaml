@@ -3,12 +3,22 @@ replicaCount: 1
 image:
   repository: docspell/restserver
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # Overrides the image tag whose default is the chart appVersion, or appVersionOverride
   tag: ""
 
 imagePullSecrets: []
+imagePullPolicy: IfNotPresent
 nameOverride: ""
 fullnameOverride: ""
+appVersionOverride: ""
+
+persistence:
+  # docspell needs persistent storage by default
+  enabled: "yes"
+  # will use the default storageClass of the cluster if empty/unset
+  storageClass: ""
+  # size to request for pvc
+  size: 100M
 
 serviceAccount:
   # Specifies whether a service account should be created

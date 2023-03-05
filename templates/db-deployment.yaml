@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     {{- include "docspell.labels" . | nindent 4 }}
-  name: db
+  name: {{ .Release.Name }}-db
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         {{- include "docspell.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: db
@@ -39,4 +38,3 @@ spec:
         - name: docspell-postgres-data
           persistentVolumeClaim:
             claimName: docspell-postgres-data
-status: {}

@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     {{- include "docspell.labels" . | nindent 4 }}
-  name: joex
+  name: {{ .Release.Name }}-joex
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -14,7 +14,6 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         {{- include "docspell.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: joex
@@ -53,4 +52,3 @@ spec:
             - containerPort: 7878
           resources: {}
       restartPolicy: Always
-status: {}

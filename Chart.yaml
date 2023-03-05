@@ -3,5 +3,5 @@ name: docspell
 description: Docspell is a Document Management System (DMS), a system that asists in organizing your piles of documents
 
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: "0.40.0"
