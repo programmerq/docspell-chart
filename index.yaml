@@ -3,6 +3,18 @@ entries:
   docspell:
   - apiVersion: v2
     appVersion: 0.40.0
+    created: "2023-04-09T22:23:58.919545644Z"
+    description: Docspell is a Document Management System (DMS), a system that asists
+      in organizing your piles of documents
+    digest: 1ad5181394424a7d47f7cf8be05a5ebd804b53d86d91f98d0d321873dec6739f
+    icon: https://docspell.org/icons/logo-only.svg
+    name: docspell
+    type: application
+    urls:
+    - https://github.com/programmerq/docspell-chart/releases/download/docspell-0.1.3/docspell-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.40.0
     created: "2023-02-24T03:26:59.642704413Z"
     description: Docspell is a Document Management System (DMS), a system that asists
       in organizing your piles of documents
@@ -23,4 +35,4 @@ entries:
     urls:
     - https://github.com/programmerq/docspell-chart/releases/download/docspell-0.1.0/docspell-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-24T03:26:59.642715813Z"
+generated: "2023-04-09T22:23:58.919557545Z"
